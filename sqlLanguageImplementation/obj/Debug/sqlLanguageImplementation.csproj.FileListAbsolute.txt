@@ -1,0 +1,1 @@
+c:\users\lorand\documents\visual studio 2015\Projects\sqlLanguageImplementation\sqlLanguageImplementation\bin\Debug\sqlLanguageImplementation.exe.config
