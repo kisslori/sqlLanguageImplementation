@@ -1,1 +1,6 @@
 c:\users\lorand\documents\visual studio 2015\Projects\sqlLanguageImplementation\sqlLanguageImplementation\bin\Debug\sqlLanguageImplementation.exe.config
+c:\users\lorand\documents\visual studio 2015\Projects\sqlLanguageImplementation\sqlLanguageImplementation\obj\Debug\sqlLanguageImplementation.csprojResolveAssemblyReference.cache
+c:\users\lorand\documents\visual studio 2015\Projects\sqlLanguageImplementation\sqlLanguageImplementation\bin\Debug\sqlLanguageImplementation.exe
+c:\users\lorand\documents\visual studio 2015\Projects\sqlLanguageImplementation\sqlLanguageImplementation\bin\Debug\sqlLanguageImplementation.pdb
+c:\users\lorand\documents\visual studio 2015\Projects\sqlLanguageImplementation\sqlLanguageImplementation\obj\Debug\sqlLanguageImplementation.exe
+c:\users\lorand\documents\visual studio 2015\Projects\sqlLanguageImplementation\sqlLanguageImplementation\obj\Debug\sqlLanguageImplementation.pdb
