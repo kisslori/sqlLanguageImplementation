@@ -10,6 +10,9 @@ namespace sqlLanguageImplementation
     {
         static void Main(string[] args)
         {
+            Ui ui = new Ui();
+            ui.showUI();
+
         }
     }
 }

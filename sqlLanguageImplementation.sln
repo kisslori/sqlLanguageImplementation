@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "sqlLanguageImplementation", "sqlLanguageImplementation\sqlLanguageImplementation.csproj", "{2764F24B-6F90-400E-9303-2434CF611BA1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JPEG", "..\JPEG\JPEG\JPEG.csproj", "{F4BD9525-B401-4115-983F-DC03D3F7FE94}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "webReader", "..\webReader\webReader\webReader.csproj", "{79B1DE42-C70F-4AB9-A65E-FF248A8203BB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		{2764F24B-6F90-400E-9303-2434CF611BA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2764F24B-6F90-400E-9303-2434CF611BA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2764F24B-6F90-400E-9303-2434CF611BA1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F4BD9525-B401-4115-983F-DC03D3F7FE94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F4BD9525-B401-4115-983F-DC03D3F7FE94}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F4BD9525-B401-4115-983F-DC03D3F7FE94}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F4BD9525-B401-4115-983F-DC03D3F7FE94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79B1DE42-C70F-4AB9-A65E-FF248A8203BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79B1DE42-C70F-4AB9-A65E-FF248A8203BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79B1DE42-C70F-4AB9-A65E-FF248A8203BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79B1DE42-C70F-4AB9-A65E-FF248A8203BB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
