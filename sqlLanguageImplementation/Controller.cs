@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace sqlLanguageImplementation
 {
@@ -21,6 +23,33 @@ namespace sqlLanguageImplementation
             this.metadata = metadata;
             this.tableEntries = tables;
             tableList = new List<Table>();
+
+            if (File.Exists(metadata))
+            {
+                XDocument xmlDoc = XDocument.Load(metadata);
+                var tabs = from el in xmlDoc.Descendants().Elements("Table") select el;
+                foreach (var t in tabs)
+                {
+                    int i = t.Descendants().Count();
+                    string name = (string)t.Descendants().ElementAt(0);
+                    Dictionary<string, string> dic = new Dictionary<string, string>();
+                    for (int j = 2; j <= i; j++)
+                    {
+                        dic.Add((string)t.Descendants().ElementAt(j - 1), (string)t.Descendants().ElementAt(j - 1).FirstAttribute );
+                    }
+
+                    Table tab = new Table(name, i - 1, dic);
+                    tableList.Add(tab);
+                }
+            }
+            else
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml("<Tables></Tables>");
+                xmlDoc.Save(metadata);
+            }
+
+
         }
         public Controller( List<Table> tables, String metadata, String tablesEntries)
         {
@@ -36,24 +65,15 @@ namespace sqlLanguageImplementation
         {
             
             try
-            {
-                //List<Table> list = new List<Table>();
-                //XmlDocument xmlDoc = new XmlDocument();
-                //xmlDoc.Load(metadata);
-                //XmlNodeList tableNodes = xmlDoc.SelectNodes("//tables/table");
-                //foreach (XmlNode tableNode in tableNodes)
-                //{
-                //    String name = tableNode.Attributes["name"].Value;
-                //    //tableNode.Attributes["age"].Value = (age + 1).ToString();
-                //}
-                //xmlDoc.Save("test-doc.xml");
-
+            {               
+                Console.WriteLine("");
                 int i = 0;
                 foreach (var t in tableList)
                 {
                     i++;
                     Console.WriteLine(i+". "+t.name);//verifica daca mere bine;
                 }
+                Console.WriteLine("");
             }
             catch (Exception e)
             {
@@ -66,18 +86,22 @@ namespace sqlLanguageImplementation
         {
             try
             {
+                Console.WriteLine("");
                 int i = 0;
                 foreach (var t in tableList)
                 {
                     i++;
                     Console.WriteLine(i+". "+t.toString());
                 }
+                Console.WriteLine("");
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             };
         }
+
+
         // prints the entries from that table
         public void showTableContent(int tableNr)
         {
@@ -101,8 +125,45 @@ namespace sqlLanguageImplementation
             try
             {
                 Table table = new Table(name, colNr, cols);
-                //  XmlDocument xmlDoc = new XmlDocument();
-                //  xmlDoc.Load(metadata);
+                
+
+                if (File.Exists(metadata))
+                {
+                    XDocument xmlDoc = XDocument.Load(metadata);
+                    XElement root = new XElement("Table");
+                    root.Add(new XElement("Name", name));
+                    foreach (var e in cols)
+                    {
+                        XElement x = new XElement("Column", e.Key);
+                        x.SetAttributeValue("Type",e.Value);
+                        root.Add(x);
+                        
+                    }
+
+                    xmlDoc.Element("Tables").Add(root);
+                    xmlDoc.Save(metadata);
+                }
+                else
+                {
+                    // Create the XmlDocument.
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.LoadXml("<Tables></Tables>");
+                    xmlDoc.Save(metadata);
+
+                    XDocument doc = XDocument.Load(metadata);
+                    XElement root = new XElement("Table");
+                    root.Add(new XElement("Name", name));
+                    foreach (var e in cols)
+                    {
+                        XElement x = new XElement("Column", e.Key);
+                        x.SetAttributeValue("Type", e.Value);
+                        root.Add(x);
+
+                    }
+
+                    doc.Element("Tables").Add(root);
+                    doc.Save(metadata);
+                }
 
                 tableList.Add(table);
 
@@ -118,6 +179,14 @@ namespace sqlLanguageImplementation
         {
             try
             {
+                XDocument doc = XDocument.Load(metadata);
+
+                string tableName = tableList[index - 1].name;
+                doc.Descendants("Table")
+                     .Where(x => x.Element("Name").Value == tableName)
+                     .Remove();
+                doc.Save(metadata);
+
                 tableList.RemoveAt(index - 1);
             }
             catch (Exception e)

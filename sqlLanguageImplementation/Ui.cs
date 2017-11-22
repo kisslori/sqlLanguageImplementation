@@ -8,7 +8,7 @@ namespace sqlLanguageImplementation
 {
     class Ui
     {
-        Controller controller = new Controller("metadata","tables");
+        Controller controller = new Controller("metadata.xml","tables.xml");
 
         public Ui()
         {
