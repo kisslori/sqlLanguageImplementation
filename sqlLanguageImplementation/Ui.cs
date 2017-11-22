@@ -23,7 +23,9 @@ namespace sqlLanguageImplementation
                 "1. Show Table List \n"+
                 "2. Show Detailed Table List \n"+
                 "3. Add a Table \n"+
-                "4. Delete a Table \n"                
+                "4. Delete a Table \n" +
+                "5. Print Table entries \n"+
+                "6. Add an entry ia a Table \n"               
                 );
 
             string s = Console.ReadLine();
@@ -45,6 +47,18 @@ namespace sqlLanguageImplementation
                     int i;
                     int.TryParse(Console.ReadLine(), out i);
                     controller.deleteTable(i);
+                    break;
+                case 5:
+                    Console.WriteLine("Insert table Index to be printed");
+                    int j;
+                    int.TryParse(Console.ReadLine(), out j);
+                    controller.showTableContent(j);
+                    break;
+                case 6:
+                    Console.WriteLine("Insert table Index to add an Entry");
+                    int k;
+                    int.TryParse(Console.ReadLine(), out k);
+                    controller.addEntryinTable(k);
                     break;
 
                 default:

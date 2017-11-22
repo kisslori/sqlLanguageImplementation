@@ -23,7 +23,9 @@ namespace sqlLanguageImplementation
             this.metadata = metadata;
             this.tableEntries = tables;
             tableList = new List<Table>();
+            
 
+            // reads the metadata file
             if (File.Exists(metadata))
             {
                 XDocument xmlDoc = XDocument.Load(metadata);
@@ -48,9 +50,41 @@ namespace sqlLanguageImplementation
                 xmlDoc.LoadXml("<Tables></Tables>");
                 xmlDoc.Save(metadata);
             }
+            // reads the table entries file
+            if (File.Exists(tables))
+            {
+                string name;
+                XDocument xmlDoc = XDocument.Load(tables);
+                var tabs = from el in xmlDoc.Descendants().Elements("Table") select el;
+                foreach (var t in tabs)
+                {
+                    int i = t.Descendants().Count();
+                    name = (string)t.Descendants().ElementAt(0);
+                    Dictionary<int, string> dic = new Dictionary<int, string>();
+                    for (int j = 1; j <= i; j++)
+                    {
+                        dic.Add((int)t.Descendants().ElementAt(j).FirstAttribute,(string)t.Descendants().ElementAt(j));
+                    }
 
-
+                    Table table;
+                    for (int k = 0; k < tableList.Count; k++)
+                    {
+                        if (tableList[k].name == name)
+                        {
+                            tableList[k].tableEntryList = dic;
+                        }
+                    }
+                }
+                
+            }
+            else
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml("<Tables></Tables>");
+                xmlDoc.Save(tables);
+            }
         }
+
         public Controller( List<Table> tables, String metadata, String tablesEntries)
         {
             this.metadata = metadata;
@@ -60,7 +94,7 @@ namespace sqlLanguageImplementation
 
        
         //=======methods========
-        //prints the table names
+        //prints only the table names
         public void showTableList()
         {
             
@@ -71,7 +105,7 @@ namespace sqlLanguageImplementation
                 foreach (var t in tableList)
                 {
                     i++;
-                    Console.WriteLine(i+". "+t.name);//verifica daca mere bine;
+                    Console.WriteLine(i+". "+t.name);
                 }
                 Console.WriteLine("");
             }
@@ -106,7 +140,7 @@ namespace sqlLanguageImplementation
         public void showTableContent(int tableNr)
         {
             try
-            {
+            { //todo read from xml
                 foreach (var e in tableList[tableNr - 1].getEntries())
                 {
                     Console.WriteLine("Key: " + e.Key + ", Value: " + e.Value);
@@ -142,6 +176,8 @@ namespace sqlLanguageImplementation
 
                     xmlDoc.Element("Tables").Add(root);
                     xmlDoc.Save(metadata);
+                   
+
                 }
                 else
                 {
@@ -165,12 +201,20 @@ namespace sqlLanguageImplementation
                     doc.Save(metadata);
                 }
 
+
+
+                // inserts in the tables xml the table name
+                XDocument xmlDoc1 = XDocument.Load(tableEntries);
+                XElement root1 = new XElement(name);
+                xmlDoc1.Element("Tables").Add(root1);
+                xmlDoc1.Save(tableEntries);
+
                 tableList.Add(table);
 
             }
             catch(Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message +"create table");
             };
         }
 
@@ -196,12 +240,36 @@ namespace sqlLanguageImplementation
         }
 
 //----------------------------------------------------------
-        public void addEntryinTable()
+        public void addEntryinTable(int index)
         {
-            try { }
+            try {
+                Console.WriteLine(" Insert the data separated by a space");
+                foreach(var a in tableList[index - 1].columnsNameTypeList)
+                {
+                    Console.Write(" "+a.Value);
+                }
+                Console.Write("\n");
+                string name = tableList[index - 1].name;
+                
+                string s = Console.ReadLine();
+                //string[] words = s.Split(' '); 
+                tableList[index - 1].addEntry(s);
+                int key = tableList[index - 1].entryNr;
+                XDocument xmlDoc1 = XDocument.Load(tableEntries);
+                var element = xmlDoc1.Element("Tables")
+                    .Elements(name).First();
+
+                XElement x = new XElement("Entry", s);
+                x.SetAttributeValue("Key", key);
+                element.Add(x);
+                xmlDoc1.Save(tableEntries);
+
+
+
+            }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message +" add entry");
             };
         }
 
