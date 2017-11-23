@@ -50,23 +50,24 @@ namespace sqlLanguageImplementation
                 xmlDoc.LoadXml("<Tables></Tables>");
                 xmlDoc.Save(metadata);
             }
+
+
             // reads the table entries file
             if (File.Exists(tables))
             {
                 string name;
                 XDocument xmlDoc = XDocument.Load(tables);
-                var tabs = from el in xmlDoc.Descendants().Elements("Table") select el;
+                var tabs = from el in xmlDoc.Descendants().Elements() select el;  
                 foreach (var t in tabs)
                 {
                     int i = t.Descendants().Count();
-                    name = (string)t.Descendants().ElementAt(0);
+                    name = t.Name.ToString();  
                     Dictionary<int, string> dic = new Dictionary<int, string>();
-                    for (int j = 1; j <= i; j++)
+                    for (int j = 0; j < i; j++)
                     {
                         dic.Add((int)t.Descendants().ElementAt(j).FirstAttribute,(string)t.Descendants().ElementAt(j));
                     }
-
-                    Table table;
+      
                     for (int k = 0; k < tableList.Count; k++)
                     {
                         if (tableList[k].name == name)
