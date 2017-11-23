@@ -53,37 +53,8 @@ namespace sqlLanguageImplementation
 
 
             // reads the table entries file
-            if (File.Exists(tables))
-            {
-                string name;
-                XDocument xmlDoc = XDocument.Load(tables);
-                var tabs = from el in xmlDoc.Descendants().Elements() select el;  
-                foreach (var t in tabs)
-                {
-                    int i = t.Descendants().Count();
-                    name = t.Name.ToString();  
-                    Dictionary<int, string> dic = new Dictionary<int, string>();
-                    for (int j = 0; j < i; j++)
-                    {
-                        dic.Add((int)t.Descendants().ElementAt(j).FirstAttribute,(string)t.Descendants().ElementAt(j));
-                    }
-      
-                    for (int k = 0; k < tableList.Count; k++)
-                    {
-                        if (tableList[k].name == name)
-                        {
-                            tableList[k].tableEntryList = dic;
-                        }
-                    }
-                }
-                
-            }
-            else
-            {
-                XmlDocument xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml("<Tables></Tables>");
-                xmlDoc.Save(tables);
-            }
+            readTableEntryesFromXml(tables);
+           
         }
 
         public Controller( List<Table> tables, String metadata, String tablesEntries)
@@ -96,6 +67,41 @@ namespace sqlLanguageImplementation
        
         //=======methods========
         //prints only the table names
+
+        public void readTableEntryesFromXml( string tables)
+        {
+            if (File.Exists(tables))
+            {
+                string name;
+                XDocument xmlDoc = XDocument.Load(tables);
+                var tabs = from el in xmlDoc.Descendants().Elements() select el;
+                foreach (var t in tabs)
+                {
+                    int i = t.Descendants().Count();
+                    name = t.Name.ToString();
+                    Dictionary<int, string> dic = new Dictionary<int, string>();
+                    for (int j = 0; j < i; j++)
+                    {
+                        dic.Add((int)t.Descendants().ElementAt(j).FirstAttribute, (string)t.Descendants().ElementAt(j));
+                    }
+
+                    for (int k = 0; k < tableList.Count; k++)
+                    {
+                        if (tableList[k].name == name)
+                        {
+                            tableList[k].tableEntryList = dic;
+                        }
+                    }
+                }
+
+            }
+            else
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.LoadXml("<Tables></Tables>");
+                xmlDoc.Save(tables);
+            }
+        }
         public void showTableList()
         {
             
@@ -141,7 +147,8 @@ namespace sqlLanguageImplementation
         public void showTableContent(int tableNr)
         {
             try
-            { //todo read from xml
+            {
+                readTableEntryesFromXml(tableEntries);
                 foreach (var e in tableList[tableNr - 1].getEntries())
                 {
                     Console.WriteLine("Key: " + e.Key + ", Value: " + e.Value);
@@ -274,18 +281,49 @@ namespace sqlLanguageImplementation
             };
         }
 
-        public void removeEntryFromTable()
+        public void removeEntryFromTable(int index)
         {
-            try { }
+            try
+            {
+                showTableContent(index);
+                Console.WriteLine("\n Enter the Key to delete the entry");
+                string keyIndex= (Console.ReadLine());
+                string name = tableList[index - 1].name;
+
+                XDocument xmlDoc = XDocument.Load(tableEntries);
+                var element = xmlDoc.Element("Tables")
+                    .Elements(name).First();
+                element.Descendants().Where(x => (string)x.Attribute("Key") == keyIndex).Remove();
+
+                xmlDoc.Save(tableEntries);
+
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             };
         }
 
-        public void updateEntryFromTable()
+        public void updateEntryFromTable(int index)
         {
-            try { }
+            try
+            {
+                showTableContent(index);
+                Console.WriteLine("\n Enter the Key to update the entry");
+                string keyIndex = (Console.ReadLine());
+                string name = tableList[index - 1].name;
+                Console.WriteLine("\n Enter the new value");
+                string value = Console.ReadLine();
+
+                XDocument xmlDoc = XDocument.Load(tableEntries);
+                var element = xmlDoc.Element("Tables")
+                    .Elements(name).First();
+                element.Descendants().Where(x => (string)x.Attribute("Key") == keyIndex).Single().SetValue(value);
+                
+
+                xmlDoc.Save(tableEntries);
+
+            }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);

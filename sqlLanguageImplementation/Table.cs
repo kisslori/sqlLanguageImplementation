@@ -34,7 +34,7 @@ namespace sqlLanguageImplementation
         // adds an entry
         public void addEntry(String entry)
         {
-            this.entryNr++;          
+            this.entryNr = tableEntryList.Count() + 1;         
             tableEntryList.Add(entryNr, entry);
 
         }
