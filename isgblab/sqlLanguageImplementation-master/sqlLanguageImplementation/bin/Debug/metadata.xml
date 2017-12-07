@@ -1,9 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Tables>
-  <Table>
-    <Name>test2</Name>
-    <Column Type="varchar">name</Column>
-    <Column Type="varchar">address</Column>
-    <Column Type="varchar">sex</Column>
-  </Table>
-</Tables>

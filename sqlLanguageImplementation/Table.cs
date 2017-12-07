@@ -15,6 +15,7 @@ namespace sqlLanguageImplementation
         public  Dictionary<String, String> columnsNameTypeList; // a list of types and names of the table's colums
         public int entryNr;  // an entrys counter to help with the keys of the entryes
         public  Dictionary<int, String> tableEntryList;    // the entryes list of the type[ key, value]
+        public int pkFlag;
 
         public Table()
         {
@@ -22,12 +23,13 @@ namespace sqlLanguageImplementation
         }
 
         //constructor
-        public Table(String name, int colNr, Dictionary<String, String> cols)
+        public Table(String name, int colNr,int pkFlag, Dictionary<String, String> cols)
         {
             this.name = name;
             this.columnNr = colNr;
             this.columnsNameTypeList = cols;
             this.entryNr = 0;
+            this.pkFlag = pkFlag;
             this.tableEntryList = new Dictionary<int, String>();   
         }
 
@@ -60,9 +62,18 @@ namespace sqlLanguageImplementation
         public string toString()
         {
             string str = "Table name: " + this.name + "\n Columns: \n ";
-            foreach(var v in this.columnsNameTypeList)
+            int index = 0;
+            foreach (var v in this.columnsNameTypeList)
             {
-                str = str + v.Key + ";" + v.Value + " \n ";
+                index++;
+                if (index == pkFlag)
+                {
+                    str = str + v.Key + " ; " + v.Value + " (pk) " + " \n ";
+                }
+                else
+                {
+                    str = str + v.Key + " ; " + v.Value + " \n ";
+                }
             }
             return str;
         }

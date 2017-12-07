@@ -95,14 +95,15 @@ namespace sqlLanguageImplementation
             int colNr;
             int.TryParse(Console.ReadLine(), out colNr);
 
-
+            int pkFlag = 1;
             Console.WriteLine("Please insert the Columns and their Type separated by a space");
             Dictionary<String, String> columnTypes = new Dictionary<string, string>();
             for (int i = 0; i < colNr; i++)
             {
-                Console.WriteLine("Column {0}: ", i);
+                Console.WriteLine("Column {0}: ", i+1);
                 string s = Console.ReadLine();
                 string[] words = s.Split(' ');
+                
                 if (words.Count() != 2)
                 {
                     Console.WriteLine(" Invalid input at column or type !");
@@ -112,7 +113,15 @@ namespace sqlLanguageImplementation
 
 
             }
-            controller.createTable(name, colNr, columnTypes);
+            Console.WriteLine("Wich column is the primary key ? (first by default)");
+            for(int i = 0; i < colNr; i++)
+            {
+                Console.WriteLine("{0}: {1}", i+1, columnTypes.ElementAt(i).Key );
+            }
+            if (!int.TryParse(Console.ReadLine(), out pkFlag))
+                pkFlag = 1;
+
+            controller.createTable(name, colNr,pkFlag, columnTypes);
         }
 
     }
